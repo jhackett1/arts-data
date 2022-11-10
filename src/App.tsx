@@ -1,13 +1,13 @@
 import React, { useState } from "react"
-import oldData from "./data/old.json"
-import newData from "./data/new.json"
+import data from "./data/data.json"
 
 enum Filter {
-  All = "All",
-  More = "Got more",
-  Less = "Got less",
-  Same = "No difference",
-  Gone = "Disappeared from the list",
+  All = "Everything",
+  More = "Got more ⬆️",
+  Less = "Got less ⬇️",
+  Same = "Same as last time 😐",
+  Gone = "Got nothing ☹️",
+  New = "New awards 🙂",
 }
 
 const formatter = new Intl.NumberFormat("en-GB", {
@@ -16,16 +16,51 @@ const formatter = new Intl.NumberFormat("en-GB", {
   minimumFractionDigits: 0,
 })
 
-const normalise = (raw: string): number =>
-  parseInt(raw.replace("£", "").replace(",", ""))
+const toPercentage = (numerator: number, denominator: number): string => {
+  const decimal = numerator / denominator
+  if (decimal !== 0)
+    return `(${decimal > 0 ? "+" : ""}${Math.floor(decimal * 100)}%)`
+  return ""
+}
+
+const diffClass = (diff: number): string => {
+  if (diff > 0) return "percentage--positive"
+  if (diff < 0) return "percentage--negative"
+  return ""
+}
 
 const App = () => {
   const [query, setQuery] = useState<string>("")
   const [filter, setFilter] = useState<Filter>(Filter.All)
 
-  const filteredRecords = oldData.filter(row =>
-    row["Applicant Name"].toLowerCase().includes(query.toLowerCase())
+  const totalOld = data.reduce<number>(
+    (acc, row) => (row?.oldAward ? acc + row.oldAward : acc),
+    0
   )
+  const totalNew = data.reduce<number>(
+    (acc, row) => (row?.newAward ? acc + row.newAward : acc),
+    0
+  )
+  const totalDiff = totalNew - totalOld
+
+  const filteredRecords = data
+    .filter(row => row.orgName.toLowerCase().includes(query.toLowerCase()))
+    .filter(row => {
+      if (filter === Filter.New) return !row.oldAward
+
+      if (filter === Filter.More)
+        return row?.oldAward && row?.newAward && row?.oldAward < row?.newAward
+
+      if (filter === Filter.Less)
+        return row?.oldAward && row?.newAward && row?.oldAward > row?.newAward
+
+      if (filter === Filter.Same)
+        return row?.oldAward && row?.newAward && row?.oldAward === row?.newAward
+
+      if (filter === Filter.Gone) return row.newAward === null
+
+      return true
+    })
 
   return (
     <>
@@ -60,6 +95,12 @@ const App = () => {
         </fieldset>
       </form>
 
+      {filteredRecords.length > 0 && (
+        <small className="record-count">
+          Showing {filteredRecords.length} results
+        </small>
+      )}
+
       {filteredRecords.length > 0 ? (
         <table>
           <thead>
@@ -71,61 +112,49 @@ const App = () => {
             </tr>
           </thead>
           <tbody>
-            {filteredRecords.map((org1, i) => {
-              const match = newData.find(
-                org2 => org1["Applicant Name"] === org2["Applicant Name"]
-              )
+            {!query && filter === Filter.All && (
+              <tr className="totals">
+                <td>All organisations</td>
+                <td>{formatter.format(totalOld)}</td>
+                <td>{formatter.format(totalNew)}</td>
+                <td>
+                  {formatter.format(totalDiff)}{" "}
+                  <small className={diffClass(totalDiff)}>
+                    {toPercentage(totalDiff, totalOld)}
+                  </small>
+                </td>
+              </tr>
+            )}
 
-              if (filter === Filter.Gone && match) return null
-
-              const oldAward = normalise(org1["Awarded Amount"])
-              const newAwardRaw =
-                match?.["2023-26 Annual Funding (Offered 4 Nov 2022)"]
-              const newAward = newAwardRaw ? normalise(newAwardRaw) : undefined
-
-              const diff = newAward && newAward - oldAward
-
-              if (
-                filter === Filter.Same &&
-                (typeof diff === "undefined" || diff !== 0)
-              )
-                return null
-              if (
-                filter === Filter.More &&
-                (typeof diff === "undefined" || diff <= 0)
-              )
-                return null
-              if (
-                filter === Filter.Less &&
-                (typeof diff === "undefined" || diff >= 0)
-              )
-                return null
-
-              const oldAwardFormatted = formatter.format(oldAward)
-              const newAwardFormatted = newAward && formatter.format(newAward)
+            {filteredRecords.map((row, i) => {
+              const diff =
+                row.newAward && row.oldAward && row.newAward - row.oldAward
 
               return (
-                <tr key={`${org1["Applicant Name"]}-${i}`}>
-                  <td>{org1["Applicant Name"]}</td>
-                  <td>{oldAwardFormatted}</td>
+                <tr key={`${row.orgName}-${i}`}>
+                  <td>{row.orgName}</td>
                   <td>
-                    {newAward ? (
-                      newAwardFormatted
-                    ) : (
+                    {row.oldAward === null ? (
                       <span className="nil">-</span>
+                    ) : (
+                      formatter.format(row.oldAward)
                     )}
                   </td>
                   <td>
-                    {newAward ? (
-                      diff && (
-                        <>
-                          {formatter.format(diff)}{" "}
-                          <small>
-                            ({diff > 0 && "+"}
-                            {Math.floor((diff / oldAward) * 100)}%)
-                          </small>
-                        </>
-                      )
+                    {row.newAward === null ? (
+                      <span className="nil">-</span>
+                    ) : (
+                      formatter.format(row.newAward)
+                    )}
+                  </td>
+                  <td>
+                    {diff !== null && row.oldAward ? (
+                      <>
+                        {formatter.format(diff)}{" "}
+                        <small className={diffClass(diff)}>
+                          {toPercentage(diff, row.oldAward)}
+                        </small>
+                      </>
                     ) : (
                       <span className="nil">-</span>
                     )}
