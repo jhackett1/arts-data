@@ -140,7 +140,8 @@ const App = () => {
       )}
 
       <footer>
-        Based on open data from Arts Council England —{" "}
+        Based on open data from Arts Council England ·{" "}
+        <a href="https://github.com/jhackett1/arts-data">Github source</a> ·{" "}
         <a href="https://ff.studio/">ff.studio</a> 2022
       </footer>
     </>
