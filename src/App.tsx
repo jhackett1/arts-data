@@ -108,19 +108,27 @@ const App = () => {
                 <tr key={`${org1["Applicant Name"]}-${i}`}>
                   <td>{org1["Applicant Name"]}</td>
                   <td>{oldAwardFormatted}</td>
-                  <td>{newAward ? newAwardFormatted : "-"}</td>
                   <td>
-                    {newAward
-                      ? diff && (
-                          <>
-                            {formatter.format(diff)}{" "}
-                            <small>
-                              ({diff > 0 && "+"}
-                              {Math.floor((diff / oldAward) * 100)}%)
-                            </small>
-                          </>
-                        )
-                      : "-"}
+                    {newAward ? (
+                      newAwardFormatted
+                    ) : (
+                      <span className="nil">-</span>
+                    )}
+                  </td>
+                  <td>
+                    {newAward ? (
+                      diff && (
+                        <>
+                          {formatter.format(diff)}{" "}
+                          <small>
+                            ({diff > 0 && "+"}
+                            {Math.floor((diff / oldAward) * 100)}%)
+                          </small>
+                        </>
+                      )
+                    ) : (
+                      <span className="nil">-</span>
+                    )}
                   </td>
                 </tr>
               )
@@ -128,8 +136,13 @@ const App = () => {
           </tbody>
         </table>
       ) : (
-        <p>No results</p>
+        <p className="no-results">No results</p>
       )}
+
+      <footer>
+        Based on open data from Arts Council England —{" "}
+        <a href="https://ff.studio/">ff.studio</a> 2022
+      </footer>
     </>
   )
 }

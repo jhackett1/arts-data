@@ -100,14 +100,56 @@ label+input {
 
   label {
     display: block;
-    padding: 1rem;
+    padding: 0.5rem;
     background: white;
     border-radius: 5px;
     cursor: pointer;
     border: 3px solid $grey3;
+
+    @media screen and (min-width: 900px) {
+      padding: 1rem;
+    }
   }
 }
 
 small {
+  color: $grey2;
+}
+
+.no-results {
+  color: $grey2;
+  font-size: 1.5rem;
+  text-align: center;
+  margin-top: 5rem;
+
+  @media screen and (min-width: 900px) {
+    margin-top: 7rem;
+    font-size: 3rem;
+  }
+}
+
+footer {
+  margin-top: 2rem;
+  padding: 2rem;
+  color: $grey2;
+  text-align: center;
+}
+
+a {
+  color: $grey2;
+
+  &:hover {
+    text-decoration: none;
+  }
+
+  &:focus,
+  &:active {
+    background: $focus;
+    color: $bg;
+    outline: 3px solid $focus;
+  }
+}
+
+.nil {
   color: $grey2;
 }
