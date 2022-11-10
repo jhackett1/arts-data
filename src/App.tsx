@@ -143,8 +143,8 @@ const App = () => {
           <thead>
             <tr>
               <th scope="col">Organisation</th>
-              <th scope="col">2018 grant</th>
-              <th scope="col">2023 grant</th>
+              <th scope="col">2018 grant (per year)</th>
+              <th scope="col">2023 grant (per year)</th>
               <th scope="col">Difference</th>
             </tr>
           </thead>
