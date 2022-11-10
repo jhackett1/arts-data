@@ -2,6 +2,23 @@
 
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap");
 
+h1 {
+
+  @media screen and (min-width: 900px) {
+    font-size: 3rem;
+  }
+}
+
+p {
+  font-size: 1.2rem;
+  line-height: 1.4;
+
+  @media screen and (min-width: 900px) {
+    max-width: 66%;
+    font-size: 1.2rem;
+  }
+}
+
 * {
   font-family: "Inter", sans-serif;
   color: $text;
@@ -32,6 +49,7 @@ form {
   gap: 1rem;
 
   @media screen and (min-width: 900px) {
+    margin-top: 3rem;
     gap: 2rem;
     grid-template-columns: 2fr 3fr;
   }

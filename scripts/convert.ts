@@ -8,7 +8,7 @@ export interface Row {
 }
 
 const normalise = (raw: string): number =>
-  parseInt(raw.replace("£", "").replace(",", ""))
+  parseInt(raw.replace("£", "").replaceAll(",", ""))
 
 const run = async (): Promise<void> => {
   const oldRows = await csv().fromFile("src/data/old.csv")
