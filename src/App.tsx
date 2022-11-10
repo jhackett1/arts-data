@@ -82,7 +82,7 @@ const App = () => {
       </a>
 
       <h1>Explore Arts Council funding data</h1>
-      <p>
+      <p className="intro">
         Arts Council England{" "}
         <a href="https://www.artscouncil.org.uk/investment23">
           announced funding distribution
@@ -90,13 +90,13 @@ const App = () => {
         for 2023-2026 in November 2022.
       </p>
 
-      <p>
+      <p className="intro">
         This is a list of organisations and how much funding they got this time
         compared to the last round from 2018-2022. Some organisations didn’t
         apply for funding this time around, others lost all funding. We aren’t
         differentiating between those at the moment.
       </p>
-      <p>
+      <p className="intro">
         We made this because we heard that it was challenging to compare between
         the two funding rounds. If you think it’s useful, have feedback, or
         suggestions for things you’d like to see, email us on{" "}

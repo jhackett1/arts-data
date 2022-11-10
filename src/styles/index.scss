@@ -2,20 +2,6 @@
 
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap");
 
-h1 {
-  @media screen and (min-width: 900px) {
-    font-size: 3rem;
-  }
-}
-
-p {
-  line-height: 1.4;
-
-  @media screen and (min-width: 900px) {
-    max-width: 66%;
-    font-size: 1.2rem;
-  }
-}
 
 * {
   font-family: "Inter", sans-serif;
@@ -33,6 +19,21 @@ body {
 
   @media screen and (min-width: 900px) {
     padding: 2rem;
+  }
+}
+
+h1 {
+  @media screen and (min-width: 900px) {
+    font-size: 3rem;
+  }
+}
+
+.intro {
+  line-height: 1.4;
+
+  @media screen and (min-width: 900px) {
+    max-width: 66%;
+    font-size: 1.2rem;
   }
 }
 
@@ -106,7 +107,7 @@ fieldset {
   padding: 0;
   border: none;
 
-  @media screen and (min-width: 600px) {
+  @media screen and (min-width: 400px) {
     grid-template-columns: 1fr 1fr;
   }
 
