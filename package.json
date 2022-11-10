@@ -21,11 +21,10 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "npm-run-all build:*",
-    "build:convert": "node scripts/convert",
+    "build:convert": "ts-node scripts/convert",
     "build:app": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "convert": "ts-node scripts/convert"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
