@@ -1,14 +1,133 @@
-import React, { useEffect } from "react"
-import convert from "./lib/convert"
+import React, { useState } from "react"
+import oldData from "./data/old.json"
+import newData from "./data/new.json"
+
+enum Filter {
+  All = "All",
+  More = "Got more",
+  Less = "Got less",
+  Same = "No difference",
+  Gone = "Disappeared from the list",
+}
+
+const formatter = new Intl.NumberFormat("en-GB", {
+  style: "currency",
+  currency: "GBP",
+  minimumFractionDigits: 0,
+})
+
+const normalise = (raw: string): number =>
+  parseInt(raw.replace("£", "").replace(",", ""))
 
 const App = () => {
-  convert()
+  const [query, setQuery] = useState<string>("")
+  const [filter, setFilter] = useState<Filter>(Filter.All)
 
-  useEffect(() => {
-    convert().then(data => console.log(data))
-  }, [])
+  const filteredRecords = oldData.filter(row =>
+    row["Applicant Name"].toLowerCase().includes(query.toLowerCase())
+  )
 
-  return <h1>working</h1>
+  return (
+    <>
+      <form>
+        <label htmlFor="search">Search by org name:</label>
+        <input
+          id="search"
+          type="search"
+          value={query}
+          onChange={e => setQuery(e.target.value)}
+        />
+
+        <fieldset>
+          <legend>Show only</legend>
+
+          {Object.entries(Filter).map(f => (
+            <div key={f[0]}>
+              <label htmlFor={`filter-${f[0]}`}>{f[1]}</label>
+              <input
+                id={`filter-${f[1]}`}
+                type="radio"
+                checked={f[1] === filter}
+                value={f[1]}
+                onChange={e => setFilter(e.target.value as Filter)}
+              />
+            </div>
+          ))}
+        </fieldset>
+      </form>
+
+      {filteredRecords.length > 0 ? (
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Org</th>
+              <th scope="col">Old award</th>
+              <th scope="col">New award</th>
+              <th scope="col">Difference</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredRecords.map((org1, i) => {
+              const match = newData.find(
+                org2 => org1["Applicant Name"] === org2["Applicant Name"]
+              )
+
+              if (filter === Filter.Gone && match) return null
+
+              const oldAward = normalise(org1["Awarded Amount"])
+              const newAwardRaw =
+                match?.["2023-26 Annual Funding (Offered 4 Nov 2022)"]
+              const newAward = newAwardRaw ? normalise(newAwardRaw) : undefined
+
+              const diff = newAward && newAward - oldAward
+
+              if (
+                filter === Filter.Same &&
+                (typeof diff === "undefined" || diff !== 0)
+              )
+                return null
+              if (
+                filter === Filter.More &&
+                (typeof diff === "undefined" || diff <= 0)
+              )
+                return null
+              if (
+                filter === Filter.Less &&
+                (typeof diff === "undefined" || diff >= 0)
+              )
+                return null
+
+              const oldAwardFormatted = formatter.format(oldAward)
+              const newAwardFormatted = newAward && formatter.format(newAward)
+
+              return (
+                <tr key={`${org1["Applicant Name"]}-${i}`}>
+                  <td>{org1["Applicant Name"]}</td>
+                  <td>{oldAwardFormatted}</td>
+                  <td>{newAward ? newAwardFormatted : "-"}</td>
+                  <td>
+                    {newAward
+                      ? diff && (
+                          <>
+                            {formatter.format(diff)}{" "}
+                            <small>
+                              ({diff > 0 && "+"}
+                              {Math.floor((diff / oldAward) * 100)}%)
+                            </small>
+                          </>
+                        )
+                      : "-"}
+                  </td>
+                </tr>
+              )
+            })}
+          </tbody>
+        </table>
+      ) : (
+        <p>No results</p>
+      )}
+    </>
+  )
 }
 
 export default App
