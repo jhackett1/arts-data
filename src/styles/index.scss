@@ -1,0 +1,113 @@
+@import "vars";
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap");
+
+* {
+  font-family: "Inter", sans-serif;
+  color: $text;
+}
+
+*:focus {
+  outline: 3px solid $focus;
+}
+
+body {
+  background-color: $bg;
+}
+
+table {
+  border-collapse: collapse;
+  font-size: 1.2rem;
+  width: 100%;
+}
+
+form {
+  margin-top: 1.5rem;
+  margin-bottom: 2rem;
+  display: grid;
+  gap: 1rem;
+
+  @media screen and (min-width: 900px) {
+    gap: 2rem;
+    grid-template-columns: 2fr 3fr;
+  }
+}
+
+td,
+th {
+  text-align: left;
+  padding: 1rem 0;
+}
+
+tr {
+  border-top: 1px solid $grey3;
+}
+
+input {
+  border: 3px solid $text;
+  font-size: 1.2rem;
+  border-radius: 5px;
+  padding: 1rem;
+  width: 100%;
+}
+
+fieldset {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0;
+  border: none;
+
+  @media screen and (min-width: 900px) {
+    flex-direction: row;
+  }
+}
+
+legend,
+label {
+  font-size: 1.2rem;
+  display: block;
+}
+
+legend {
+  margin-bottom: 0.5rem;
+}
+
+label+input {
+  margin-top: 0.5rem;
+}
+
+
+.radio {
+  position: relative;
+  display: block;
+  border-radius: 5px;
+  text-align: center;
+
+  &:focus-within {
+    outline: 3px solid $focus;
+  }
+
+  input {
+    position: absolute;
+    opacity: 0;
+  }
+
+  input:checked+label {
+    background: $yellow;
+    border: 3px solid darken($yellow, 20);
+  }
+
+  label {
+    display: block;
+    padding: 1rem;
+    background: white;
+    border-radius: 5px;
+    cursor: pointer;
+    border: 3px solid $grey3;
+  }
+}
+
+small {
+  color: $grey2;
+}

@@ -30,27 +30,31 @@ const App = () => {
   return (
     <>
       <form>
-        <label htmlFor="search">Search by org name:</label>
-        <input
-          id="search"
-          type="search"
-          value={query}
-          onChange={e => setQuery(e.target.value)}
-        />
+        <div>
+          <label htmlFor="search">Search by organisation:</label>
+          <input
+            id="search"
+            type="search"
+            value={query}
+            onChange={e => setQuery(e.target.value)}
+            placeholder="Search..."
+          />
+        </div>
 
         <fieldset>
-          <legend>Show only</legend>
+          <legend>Show only:</legend>
 
           {Object.entries(Filter).map(f => (
-            <div key={f[0]}>
-              <label htmlFor={`filter-${f[0]}`}>{f[1]}</label>
+            <div key={f[0]} className="radio">
               <input
                 id={`filter-${f[1]}`}
                 type="radio"
+                name="filter"
                 checked={f[1] === filter}
                 value={f[1]}
                 onChange={e => setFilter(e.target.value as Filter)}
               />
+              <label htmlFor={`filter-${f[1]}`}>{f[1]}</label>
             </div>
           ))}
         </fieldset>
@@ -60,7 +64,7 @@ const App = () => {
         <table>
           <thead>
             <tr>
-              <th scope="col">Org</th>
+              <th scope="col">Organisation</th>
               <th scope="col">Old award</th>
               <th scope="col">New award</th>
               <th scope="col">Difference</th>
