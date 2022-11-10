@@ -79,6 +79,7 @@ const App = () => {
             fill="#333333"
           />
         </svg>
+        <span className="visually-hidden">ff.studio</span>
       </a>
 
       <h1>Explore Arts Council funding data</h1>

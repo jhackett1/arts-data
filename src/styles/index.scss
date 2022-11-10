@@ -22,6 +22,12 @@ body {
   }
 }
 
+.visually-hidden {
+  font-size: 0;
+  opacity: 0;
+  position: absolute;
+}
+
 h1 {
   @media screen and (min-width: 900px) {
     font-size: 3rem;
