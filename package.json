@@ -19,7 +19,9 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "npm-run-all build:*",
+    "build:convert": "node scripts/convert",
+    "build:app": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "convert": "node scripts/convert"
@@ -41,5 +43,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "npm-run-all": "^4.1.5"
   }
 }
