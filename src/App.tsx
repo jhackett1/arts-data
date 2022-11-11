@@ -94,7 +94,7 @@ const App = () => {
       <p className="intro">
         This is a list of organisations and how much funding they got this time
         compared to the last round from 2018-2022. Some organisations didn’t
-        apply for funding this time around, others lost all funding. We aren’t
+        apply for funding this time around, others were not awarded any funding. We aren’t
         differentiating between those at the moment.
       </p>
       <p className="intro">
@@ -206,7 +206,7 @@ const App = () => {
       )}
       <footer>
         Based on open data from Arts Council England ·{" "}
-        <a href="https://github.com/jhackett1/arts-data">Github source</a> ·{" "}
+        <a href="https://github.com/jhackett1/arts-data">GitHub source</a> ·{" "}
         <a href="https://ff.studio/">ff.studio</a> 2022
       </footer>
     </>
