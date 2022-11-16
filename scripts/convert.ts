@@ -47,6 +47,7 @@ const run = async (): Promise<void> => {
     }
   })
 
+  fs.writeFileSync("public/data.json", JSON.stringify(convertedData))
   fs.writeFileSync("src/data/data.json", JSON.stringify(convertedData))
 }
 
